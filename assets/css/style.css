@@ -5,8 +5,8 @@
     --primary-800: #1e293b;
     --primary-50: #f1f5f9;
 
-    --accent-600: #2563eb;
-    /* Vibrant Blue */
+    --accent-600: #1d4ed8;
+    /* Vibrant Blue - Optimized for Contrast */
     --accent-500: #3b82f6;
     --accent-100: #dbeafe;
 
@@ -181,6 +181,10 @@ header {
     align-items: center;
 }
 
+.hero-wrapper>div {
+    max-width: 100%;
+}
+
 .hero-content h1 {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
@@ -301,86 +305,10 @@ header {
     margin-bottom: 1rem;
 }
 
-/* Sticky Mobile - Premium Floating Bar */
+/* Sticky Mobile - premium Floating Bar is handled in media query below */
 .sticky-footer-cta {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    width: auto;
-    transform: none;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    padding: 10px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
     display: none;
-    z-index: 9999;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    display: flex;
-    gap: 12px;
-}
-
-.sticky-footer-cta .btn {
-    flex: 1;
-    border-radius: 14px;
-    padding: 14px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.sticky-footer-cta .btn:active {
-    transform: scale(0.96);
-}
-
-/* Specific Button Colors */
-.btn-call-sticky {
-    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
-    color: white !important;
-    border: none;
-}
-
-.btn-whatsapp-sticky {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    color: white !important;
-    border: none;
-}
-
-.btn-map-sticky {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    /* Amber/Orange for Map/Directions */
-    color: white !important;
-    border: none;
-}
-
-/* Add shimmer effect to call button */
-.btn-call-sticky {
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-call-sticky::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-    100% {
-        left: 100%;
-    }
+    /* Hidden by default on desktop */
 }
 
 /* Tablet/Mobile Adjustments */
@@ -407,11 +335,431 @@ header {
         display: none;
     }
 
+    /* Sticky Footer - Modern Floating Dock */
     .sticky-footer-cta {
-        display: block;
+        display: flex !important;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 400px;
+        z-index: 2147483647;
+        gap: 0;
+        padding: 5px;
+        background: rgba(15, 23, 42, 0.95);
+        /* Dark Slate */
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 100px;
+        /* Full Capsule */
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .sticky-footer-cta a {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        height: 48px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .sticky-footer-cta a svg {
+        width: 20px;
+        height: 20px;
+        opacity: 0.9;
+    }
+
+    /* Call Button - Primary Blue */
+    .btn-call-sticky {
+        background: #2563eb;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Itinerary - Transparent/Ghost */
+    .btn-map-sticky {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.8) !important;
+        box-shadow: none;
+    }
+
+    .btn-map-sticky:hover,
+    .btn-map-sticky:active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white !important;
+    }
+
+    .hero-wrapper {
+        gap: 2.5rem;
+        grid-template-columns: 1fr;
     }
 
     #hero {
         padding: 4rem 0;
     }
+
+    h1 {
+        font-size: 2.2rem !important;
+    }
+
+    h2 {
+        font-size: 1.8rem !important;
+    }
+}
+
+/* Scroll Reveal Animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Feature List Polish */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: var(--primary-900);
+    background: white;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Sticky Pulse Animation - Refined */
+@keyframes pulse-sticky {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.sticky-footer-cta:hover .btn-call-sticky {
+    animation: pulse-sticky 2s infinite;
+}
+
+/* Chapter Images Polish */
+.img-chapter {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    .img-chapter {
+        max-height: 350px;
+    }
+}
+
+.img-chapter:hover {
+    transform: scale(1.02);
+}
+
+/* Swiper Enhancements */
+.swiper-slide {
+    height: 100%;
+    background: #000;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+
+/* Floating WhatsApp Button */
+.btn-whatsapp-pulse {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    animation: pulse-green 2s infinite;
+}
+
+.btn-whatsapp-pulse:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* Adjust for Mobile */
+@media (max-width: 768px) {
+    .btn-whatsapp-pulse {
+        bottom: 90px;
+        /* Position above the sticky footer bar */
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .btn-whatsapp-pulse svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--accent-600) !important;
+}
+
+/* Responsive Section Spacing */
+.section-mission,
+.section-tech,
+.section-services,
+.section-team,
+.section-why,
+.section-faq {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.gap-lg {
+    gap: 5rem;
+}
+
+@media (max-width: 768px) {
+
+    .section-mission,
+    .section-tech,
+    .section-services {
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    .gap-lg {
+        gap: 2.5rem !important;
+    }
+
+    .section-title h2 {
+        font-size: 2rem !important;
+    }
+}
+
+/* Hero Gradient Animation */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#hero {
+    background: radial-gradient(circle at top right, var(--accent-100) 0%, #ffffff 40%);
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+}
+
+/* FAQ Accordion Polish */
+details {
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+details[open] {
+    background: var(--primary-50);
+}
+
+summary {
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--accent-600);
+    transition: transform 0.3s ease;
+}
+
+details[open] summary::after {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 100px;
+    /* Moved up above WhatsApp button */
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: white;
+    color: var(--accent-600);
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 9000;
+    border: 1px solid var(--primary-50);
+}
+
+#back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+#back-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background: var(--accent-600);
+    color: white;
+}
+
+/* Mobile adjust for Back to Top (avoid sticky bar) */
+@media (max-width: 768px) {
+    #back-to-top {
+        bottom: 150px;
+        /* Moved up further for mobile stack */
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Google Reviews Section */
+.review-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--primary-50);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent-100);
+    color: var(--accent-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.reviewer-info h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    color: var(--primary-900);
+}
+
+.review-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.stars {
+    color: #fbbf24;
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+}
+
+.google-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #e2e8f0;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 2rem;
+}
+
+.google-G {
+    width: 20px;
+    height: 20px;
 }
