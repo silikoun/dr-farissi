@@ -287,37 +287,142 @@ $link_fr = "?kw=kine"; // Default French context
 $link_ar = "?kw=darija"; // Darija context
 ?>
 
-<header>
+<header id="main-header">
     <div class="container navbar">
-        <div class="logo">
+        <a href="index.php" class="logo">
             <!-- Simple SVG Logo Icon -->
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="24" height="24" rx="8" fill="#2563EB"/>
                 <path d="M12 7V17M7 12H17" stroke="white" stroke-width="3" stroke-linecap="round"/>
             </svg>
-            <div style="display:flex; flex-direction:column; line-height:1.1; margin-left:10px;">
-                <span style="font-size:1.1rem; color:var(--primary-900)">Fares Medical Center</span>
-                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:400;"><?php echo ($lang === 'ar') ? 'مركز طبي متعدد التخصصات' : 'Centre Médical Pluridisciplinaire'; ?></span>
+            <div class="logo-text">
+                <span class="logo-title">Fares Medical Center</span>
+                <span class="logo-subtitle"><?php echo ($lang === 'ar') ? 'مركز طبي متعدد التخصصات' : 'Centre Médical Pluridisciplinaire'; ?></span>
             </div>
-        </div>
-        <nav class="nav-links">
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-links" id="nav-links">
             <a href="index.php" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Home'});"><?php echo $nav['home']; ?></a>
             <a href="index.php#services" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Services'});"><?php echo $nav['services']; ?></a>
             <a href="index.php#about" onclick="fbq('trackCustom', 'Nav_Click', {section: 'About'});"><?php echo $nav['about']; ?></a>
             <a href="index.php#reviews" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Reviews'});"><?php echo $nav['reviews']; ?></a>
             <a href="index.php#contact" onclick="fbq('track', 'Contact');"><?php echo $nav['contact']; ?></a>
         </nav>
-        <div class="desktop-cta" style="display:flex; align-items:center; gap:1rem;">
-             <!-- Language Switcher -->
-            <div style="font-size:0.9rem; font-weight:600;">
-                <a href="<?php echo $link_fr; ?>" style="color:<?php echo ($lang!=='ar')?'var(--primary-700)':'#64748b'; ?>; text-decoration:none;">FR</a>
-                <span style="color:#94a3b8; margin:0 4px;">|</span>
-                <a href="<?php echo $link_ar; ?>" style="color:<?php echo ($lang==='ar')?'var(--primary-700)':'#64748b'; ?>; text-decoration:none;">AR</a>
+
+        <!-- Desktop CTA -->
+        <div class="desktop-cta">
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                <a href="<?php echo $link_fr; ?>" class="lang-link <?php echo ($lang!=='ar')?'active':''; ?>">FR</a>
+                <span class="lang-sep">|</span>
+                <a href="<?php echo $link_ar; ?>" class="lang-link <?php echo ($lang==='ar')?'active':''; ?>">AR</a>
             </div>
-            
-            <a href="tel:+212665010699" class="btn btn-primary" onclick="fbq('track', 'Contact'); gtag('event', 'contact'); return gtag_report_conversion('tel:+212665010699', 'AW-17847107352/Q8RwCJKJut4bEJj-lL5C');">
+            <a href="tel:+212665010699" class="btn btn-primary header-cta" onclick="fbq('track', 'Contact'); gtag('event', 'contact'); return gtag_report_conversion('tel:+212665010699', 'AW-17847107352/Q8RwCJKJut4bEJj-lL5C');">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <?php echo $nav['call_btn']; ?>
+            </a>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-overlay"></div>
+
+    <!-- Mobile Slide Menu -->
+    <div class="mobile-menu" id="mobile-menu" dir="<?php echo $dir; ?>">
+        <div class="mobile-menu-header">
+            <div class="logo" style="gap:0.5rem;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="8" fill="#2563EB"/><path d="M12 7V17M7 12H17" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+                <span class="logo-title" style="font-size:1rem;">Fares Medical Center</span>
+            </div>
+            <button class="mobile-close" id="mobile-close" aria-label="Fermer le menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <nav class="mobile-nav">
+            <a href="index.php" class="mobile-nav-link" onclick="closeMobileMenu();">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <?php echo $nav['home']; ?>
+            </a>
+            <a href="index.php#services" class="mobile-nav-link" onclick="closeMobileMenu();">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                <?php echo $nav['services']; ?>
+            </a>
+            <a href="index.php#about" class="mobile-nav-link" onclick="closeMobileMenu();">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <?php echo $nav['about']; ?>
+            </a>
+            <a href="index.php#reviews" class="mobile-nav-link" onclick="closeMobileMenu();">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <?php echo $nav['reviews']; ?>
+            </a>
+            <a href="index.php#contact" class="mobile-nav-link" onclick="closeMobileMenu();">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <?php echo $nav['contact']; ?>
+            </a>
+        </nav>
+        <div class="mobile-menu-footer">
+            <div class="lang-switcher" style="justify-content:center; margin-bottom:1rem;">
+                <a href="<?php echo $link_fr; ?>" class="lang-link <?php echo ($lang!=='ar')?'active':''; ?>">🇫🇷 Français</a>
+                <span class="lang-sep">|</span>
+                <a href="<?php echo $link_ar; ?>" class="lang-link <?php echo ($lang==='ar')?'active':''; ?>">🇲🇦 العربية</a>
+            </div>
+            <a href="tel:+212665010699" class="btn btn-primary" style="width:100%; justify-content:center; gap:0.5rem;" onclick="fbq('track', 'Contact'); gtag('event', 'contact');">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                 <?php echo $nav['call_btn']; ?>
             </a>
         </div>
     </div>
 </header>
+
+<script>
+// Mobile Menu Logic
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileOverlay = document.getElementById('mobile-overlay');
+const mobileClose = document.getElementById('mobile-close');
+
+function openMobileMenu() {
+    mobileMenu.classList.add('open');
+    mobileOverlay.classList.add('open');
+    hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    mobileOverlay.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', function() {
+    if (mobileMenu.classList.contains('open')) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
+    }
+});
+
+mobileOverlay.addEventListener('click', closeMobileMenu);
+mobileClose.addEventListener('click', closeMobileMenu);
+
+// Header shrink on scroll
+const mainHeader = document.getElementById('main-header');
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+        mainHeader.classList.add('scrolled');
+    } else {
+        mainHeader.classList.remove('scrolled');
+    }
+});
+</script>
