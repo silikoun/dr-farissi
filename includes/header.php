@@ -1,5 +1,9 @@
+<?php 
+$lang = $lang ?? 'fr'; 
+$dir = $dir ?? 'ltr'; 
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?php echo $lang; ?>" dir="<?php echo $dir; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,16 +20,20 @@
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="assets/images/favicon.svg">
-    <!-- Main CSS -->
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="assets/images/hero.jpg?v=2" fetchpriority="high">
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style.css?v=<?php echo file_exists('assets/css/style.css') ? filemtime('assets/css/style.css') : time(); ?>">
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://md-eecad2978f7a43f5b7838c919258e6de.ecs.us-east-2.on.aws" crossorigin>
     <!-- Modern Font Stack -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
     
@@ -221,8 +229,63 @@
     src="https://www.facebook.com/tr?id=792412222997462&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
+
+    <style>
+        /* RTL Overrides */
+        html[dir="rtl"] {
+            text-align: right;
+            direction: rtl;
+        }
+        html[dir="rtl"] .navbar {
+            flex-direction: row-reverse;
+        }
+        html[dir="rtl"] .nav-links {
+            margin-right: auto;
+            margin-left: 0;
+            flex-direction: row-reverse;
+        }
+        html[dir="rtl"] .desktop-cta {
+            margin-right: 0; 
+        }
+        html[dir="rtl"] .logo {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+        html[dir="rtl"] .logo div {
+            align-items: flex-end;
+            margin-right: 10px;
+            margin-left:0;
+        }
+    </style>
 </head>
 <body>
+
+<?php
+// Nav Content
+$nav = [
+    'home' => "Accueil",
+    'services' => "Services",
+    'about' => "À Propos",
+    'reviews' => "Avis",
+    'contact' => "Rendez-vous",
+    'call_btn' => "Appeler 0665010699"
+];
+
+if (isset($lang) && $lang === 'ar') {
+    $nav = [
+        'home' => "الرئيسية",
+        'services' => "الخدمات",
+        'about' => "معلومات عنا",
+        'reviews' => "آراء المرضى",
+        'contact' => "حجز موعد",
+        'call_btn' => "إتصل بنا 0665010699"
+    ];
+}
+
+// Language Links
+$link_fr = "?kw=kine"; // Default French context
+$link_ar = "?kw=darija"; // Darija context
+?>
 
 <header>
     <div class="container navbar">
@@ -232,21 +295,28 @@
                 <rect width="24" height="24" rx="8" fill="#2563EB"/>
                 <path d="M12 7V17M7 12H17" stroke="white" stroke-width="3" stroke-linecap="round"/>
             </svg>
-            <div style="display:flex; flex-direction:column; line-height:1.1">
+            <div style="display:flex; flex-direction:column; line-height:1.1; margin-left:10px;">
                 <span style="font-size:1.1rem; color:var(--primary-900)">Fares Medical Center</span>
-                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:400;">Centre Médical Pluridisciplinaire</span>
+                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:400;"><?php echo ($lang === 'ar') ? 'مركز طبي متعدد التخصصات' : 'Centre Médical Pluridisciplinaire'; ?></span>
             </div>
         </div>
         <nav class="nav-links">
-            <a href="index.php" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Home'});">Accueil</a>
-            <a href="index.php#services" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Services'});">Services</a>
-            <a href="index.php#about" onclick="fbq('trackCustom', 'Nav_Click', {section: 'About'});">À Propos</a>
-            <a href="index.php#reviews" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Reviews'});">Avis</a>
-            <a href="index.php#contact" onclick="fbq('track', 'Contact');">Rendez-vous</a>
+            <a href="index.php" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Home'});"><?php echo $nav['home']; ?></a>
+            <a href="index.php#services" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Services'});"><?php echo $nav['services']; ?></a>
+            <a href="index.php#about" onclick="fbq('trackCustom', 'Nav_Click', {section: 'About'});"><?php echo $nav['about']; ?></a>
+            <a href="index.php#reviews" onclick="fbq('trackCustom', 'Nav_Click', {section: 'Reviews'});"><?php echo $nav['reviews']; ?></a>
+            <a href="index.php#contact" onclick="fbq('track', 'Contact');"><?php echo $nav['contact']; ?></a>
         </nav>
-        <div class="desktop-cta">
+        <div class="desktop-cta" style="display:flex; align-items:center; gap:1rem;">
+             <!-- Language Switcher -->
+            <div style="font-size:0.9rem; font-weight:600;">
+                <a href="<?php echo $link_fr; ?>" style="color:<?php echo ($lang!=='ar')?'var(--primary-700)':'#64748b'; ?>; text-decoration:none;">FR</a>
+                <span style="color:#94a3b8; margin:0 4px;">|</span>
+                <a href="<?php echo $link_ar; ?>" style="color:<?php echo ($lang==='ar')?'var(--primary-700)':'#64748b'; ?>; text-decoration:none;">AR</a>
+            </div>
+            
             <a href="tel:+212665010699" class="btn btn-primary" onclick="fbq('track', 'Contact'); gtag('event', 'contact'); return gtag_report_conversion('tel:+212665010699', 'AW-17847107352/Q8RwCJKJut4bEJj-lL5C');">
-                Appeler 0665010699
+                <?php echo $nav['call_btn']; ?>
             </a>
         </div>
     </div>

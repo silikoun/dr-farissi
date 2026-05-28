@@ -1,91 +1,68 @@
 <?php
 // optimize_images.php
+// This script compresses all jpg/png files in assets/images in-place to fix Lighthouse warnings.
 
-$sourceDir = __DIR__ . '/New folder';
-$destDir = __DIR__ . '/assets/images/gallery';
-
-if (!is_dir($destDir)) {
-    mkdir($destDir, 0777, true);
-}
-
-$files = scandir($sourceDir);
+$dirs = [__DIR__ . '/assets/images', __DIR__ . '/assets/images/gallery'];
 $count = 0;
 
-foreach ($files as $file) {
-    if (in_array($file, ['.', '..'])) continue;
-
-    $sourcePath = $sourceDir . '/' . $file;
-    $info = pathinfo($sourcePath);
-    $ext = strtolower($info['extension']);
+foreach ($dirs as $dir) {
+    if (!is_dir($dir)) continue;
     
-    if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) continue;
+    $files = scandir($dir);
+    foreach ($files as $file) {
+        if (in_array($file, ['.', '..'])) continue;
+        
+        $path = $dir . '/' . $file;
+        if (!is_file($path)) continue;
+        
+        $info = pathinfo($path);
+        $ext = strtolower($info['extension'] ?? '');
+        
+        if (!in_array($ext, ['jpg', 'jpeg', 'png'])) continue;
 
-    echo "Processing: $file ... ";
+        echo "Processing: $file ... ";
 
-    // Load image
-    switch ($ext) {
-        case 'jpg':
-        case 'jpeg':
-            $image = imagecreatefromjpeg($sourcePath);
-            break;
-        case 'png':
-            $image = imagecreatefrompng($sourcePath);
-            break;
-        case 'webp':
-            $image = imagecreatefromwebp($sourcePath);
-            break;
-    }
-
-    if (!$image) {
-        echo "Failed to load.\n";
-        continue;
-    }
-
-    // Fix Orientation before resizing
-    if ($ext === 'jpg' || $ext === 'jpeg') {
-        $exif = @exif_read_data($sourcePath);
-        if ($exif && isset($exif['Orientation'])) {
-            switch ($exif['Orientation']) {
-                case 3:
-                    $image = imagerotate($image, 180, 0);
-                    break;
-                case 6:
-                    $image = imagerotate($image, -90, 0);
-                    break;
-                case 8:
-                    $image = imagerotate($image, 90, 0);
-                    break;
-            }
+        if ($ext === 'jpg' || $ext === 'jpeg') {
+            $image = @imagecreatefromjpeg($path);
+        } else {
+            $image = @imagecreatefrompng($path);
         }
-    }
 
-    // Resize if too big (max width 1200px)
-    $width = imagesx($image);
-    $height = imagesy($image);
-    $maxWidth = 1200;
+        if (!$image) {
+            echo "Failed to load.<br>\n";
+            continue;
+        }
 
-    if ($width > $maxWidth) {
-        $newWidth = $maxWidth;
-        $newHeight = floor($height * ($maxWidth / $width));
-        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $maxWidth = 1000;
+
+        if ($width > $maxWidth) {
+            $newWidth = $maxWidth;
+            $newHeight = floor($height * ($maxWidth / $width));
+            $newImage = imagecreatetruecolor($newWidth, $newHeight);
+            
+            if ($ext === 'png') {
+                imagealphablending($newImage, false);
+                imagesavealpha($newImage, true);
+            }
+            
+            imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+            imagedestroy($image);
+            $image = $newImage;
+        }
+
+        if ($ext === 'jpg' || $ext === 'jpeg') {
+            imagejpeg($image, $path, 70); // Compress to 70% quality
+        } else {
+            imagepng($image, $path, 8); // High compression for PNG
+        }
         
-        // Handle transparency
-        imagealphablending($newImage, false);
-        imagesavealpha($newImage, true);
-        
-        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
         imagedestroy($image);
-        $image = $newImage;
+        echo "Optimized!<br>\n";
+        $count++;
     }
-
-    // Save as WebP
-    $destPath = $destDir . '/' . $info['filename'] . '.webp';
-    imagewebp($image, $destPath, 80); // 80% quality
-    imagedestroy($image);
-
-    echo "Saved to assets/images/gallery/" . $info['filename'] . ".webp\n";
-    $count++;
 }
 
-echo "Done! Processed $count images.\n";
+echo "<h3>Done! Processed $count images.</h3>";
 ?>

@@ -107,6 +107,7 @@ header {
     font-weight: 500;
     font-size: 0.95rem;
     color: var(--text-muted);
+    padding: 0.5rem;
 }
 
 .nav-links a:hover {
@@ -329,7 +330,19 @@ header {
 }
 
 @media (max-width: 768px) {
-
+    .navbar {
+        justify-content: center;
+        height: 70px;
+    }
+    .logo {
+        text-align: center;
+    }
+    .logo span:first-child {
+        font-size: 1rem !important;
+    }
+    .logo span:last-child {
+        font-size: 0.65rem !important;
+    }
     .nav-links,
     .desktop-cta {
         display: none;
@@ -379,7 +392,7 @@ header {
 
     /* Call Button - Primary Blue */
     .btn-call-sticky {
-        background: #2563eb;
+        background: #1d4ed8;
         color: white !important;
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
     }
@@ -489,6 +502,12 @@ header {
 }
 
 /* Swiper Enhancements */
+.swiper-pagination-bullet {
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 8px !important;
+}
+
 .swiper-slide {
     height: 100%;
     background: #000;
@@ -502,7 +521,7 @@ header {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background-color: #25D366;
+    background-color: #15803d;
     color: white;
     width: 60px;
     height: 60px;
@@ -728,7 +747,7 @@ details[open] summary::after {
     font-size: 1.1rem;
 }
 
-.reviewer-info h4 {
+.reviewer-info h3 {
     font-size: 0.95rem;
     margin-bottom: 0.2rem;
     color: var(--primary-900);
