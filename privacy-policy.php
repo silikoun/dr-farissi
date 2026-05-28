@@ -1,4 +1,8 @@
-<?php include 'includes/header.php'; ?>
+<?php 
+$lang = 'fr'; 
+$dir = 'ltr';
+include 'includes/header.php'; 
+?>
 
 <section style="padding: 8rem 0 5rem; background: var(--primary-50);">
     <div class="container">
